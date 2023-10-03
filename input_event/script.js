@@ -33,4 +33,42 @@ document.addEventListener('DOMContentLoaded', function(){
         console.log('input Nama : blur');
         document.getElementById('notifikasiSisaKarakter').style.visibility = 'hidden';
     });
+
+    //onchange
+    document.getElementById('inputCaptcha').addEventListener('change', function(){
+        console.log('inputCaptcha: change');
+
+        const inputCaptcha = document.getElementById('inputCaptcha').value;
+        const submitButtonStatus = document.getElementById('submitButton');
+
+        if(inputCaptcha === 'PRNU'){
+            submitButtonStatus.removeAttribute('disabled');
+        } else {
+            submitButtonStatus.setAttribute('disabled', '');
+        }
+    });
+
+    //Validasi formulir
+    document.getElementById('formDataDiri').addEventListener('submit', function(event){
+        const inputCaptcha = document.getElementById('inputCaptcha').value;
+
+        if(inputCaptcha === 'PRNU'){
+            alert('Selamat! Capcha Anda lolos :D');
+        } else {
+            alert('Capcha anda belum tepat :(');
+            document.getElementById('submitButton').setAttribute('disabled', '');
+        }
+        event.preventDefault();
+    });
+
+    //oncopy
+    document.getElementById('inputCopy').addEventListener('copy', function(){
+        alert('Anda telah men-copy sesuatu ...');
+    });
+
+    //onpaste
+    document.getElementById('inputPaste').addEventListener('paste', function(){
+        alert('Anda telah men-Paste sebuah text ...');
+    });
 });
+
