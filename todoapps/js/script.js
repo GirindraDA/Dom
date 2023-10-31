@@ -1,5 +1,7 @@
 const todos = [];
 const RENDER_EVENT = 'render-todo';
+const SAVED_EVENT = 'saved-todo';
+const STORAGE_KEY = 'TODO_APPS';
 
 document.addEventListener('DOMContentLoaded', function(){
     const submitForm = document.getElementById('form');
@@ -19,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function(){
     todos.push(todoObject);
 
     document.dispatchEvent(new Event(RENDER_EVENT));
+    saveData();
 }
 
 //generateID
@@ -91,6 +94,7 @@ function addTaskToCompleted(todoId){
 
     todoTarget.isCompleted = true;
     document.dispatchEvent(new Event(RENDER_EVENT));
+    saveData();
 }
 
 //fungsi findTodo
@@ -111,6 +115,7 @@ function removeTaskFromCompleted(todoId){
 
     todos.splice(todoTarget, 1);
     document.dispatchEvent(new Event(RENDER_EVENT));
+    saveData();
 }
 
 //fungsi undoTaskFRomCompleted
@@ -121,6 +126,7 @@ function undoTaskFromCompleted(todoId){
 
     todoTarget.isCompleted = false;
     document.dispatchEvent(new Event(RENDER_EVENT));
+    saveData();
 }
 
 //fungsi findTodoIndex
@@ -134,9 +140,7 @@ function findTodoIndex(todoId){
     return -1;
 }
 
-
 document.addEventListener(RENDER_EVENT, function(){
-    // console.log(todos);
     const uncompletedTODOList = document.getElementById('todos');
     uncompletedTODOList.innerHTML = '';
 
@@ -152,4 +156,38 @@ document.addEventListener(RENDER_EVENT, function(){
         }
     }
 });
+
+//check storage exist
+function isStorageExist(){
+    if(typeof(Storage) === undefined){
+        alert('Browser kamu tidak mendukung local storage');
+        return false;
+    }
+    return true;
+}
+
+//Save data
+function saveData(){
+    if(isStorageExist()){
+        const parsed = JSON.stringify(todos);
+        localStorage.setItem(STORAGE_KEY, parsed);
+        document.dispatchEvent(new Event(SAVED_EVENT));
+    }
+}
+
+document.addEventListener(SAVED_EVENT, function(){
+    console.log(localStorage.getItem(STORAGE_KEY));
+})
+
+
+
+
+
+
+
+
+
+
+
+
 
