@@ -9,6 +9,10 @@ document.addEventListener('DOMContentLoaded', function(){
         event.preventDefault();
         addTodo();
     });
+    //membuat web menampilkan data yg ada di local storage jika ada
+    if(isStorageExist()){
+        loadDataFromStorage();
+    }
 });
 
   //function addTodo
@@ -178,6 +182,20 @@ function saveData(){
 document.addEventListener(SAVED_EVENT, function(){
     console.log(localStorage.getItem(STORAGE_KEY));
 })
+
+//membuat web menampilkan data dari local storage ketika render
+function loadDataFromStorage(){
+    const serializedData = localStorage.getItem(STORAGE_KEY);
+    let data = JSON.parse(serializedData);
+
+    if(data !== null){
+        for(const todo of data){
+            todos.push(todo);
+        }
+    }
+
+    document.dispatchEvent(new Event(RENDER_EVENT));
+}
 
 
 
